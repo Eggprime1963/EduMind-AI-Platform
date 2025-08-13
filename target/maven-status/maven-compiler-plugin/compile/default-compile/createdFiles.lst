@@ -26,6 +26,7 @@ tech\nguyenstudy0504\learningplatform\LearningPlatformApplication.class
 tech\nguyenstudy0504\learningplatform\model\Assignment$Status.class
 tech\nguyenstudy0504\learningplatform\model\Assignment.class
 tech\nguyenstudy0504\learningplatform\repository\LectureRepository.class
+tech\nguyenstudy0504\learningplatform\config\DataLoader.class
 tech\nguyenstudy0504\learningplatform\model\Course.class
 tech\nguyenstudy0504\learningplatform\repository\CourseRepository.class
 tech\nguyenstudy0504\learningplatform\service\EnrollmentService.class
