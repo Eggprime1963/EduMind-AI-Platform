@@ -1,6 +1,7 @@
 tech\nguyenstudy0504\learningplatform\dto\ApiResponse.class
 tech\nguyenstudy0504\learningplatform\util\JwtUtil.class
 tech\nguyenstudy0504\learningplatform\model\UserActivity$ActivityType.class
+tech\nguyenstudy0504\learningplatform\controller\CustomErrorController.class
 tech\nguyenstudy0504\learningplatform\controller\EnrollmentController.class
 tech\nguyenstudy0504\learningplatform\model\Lecture.class
 tech\nguyenstudy0504\learningplatform\model\User$Role.class
@@ -31,6 +32,7 @@ tech\nguyenstudy0504\learningplatform\service\EnrollmentService.class
 tech\nguyenstudy0504\learningplatform\model\Lecture$Status.class
 tech\nguyenstudy0504\learningplatform\dto\LoginResponse.class
 tech\nguyenstudy0504\learningplatform\repository\EnrollmentRepository.class
+tech\nguyenstudy0504\learningplatform\controller\HealthController.class
 tech\nguyenstudy0504\learningplatform\repository\UserRepository.class
 tech\nguyenstudy0504\learningplatform\model\Enrollment$Status.class
 tech\nguyenstudy0504\learningplatform\config\SecurityConfig.class

@@ -35,12 +35,17 @@ public class SecurityConfig {
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
                     new AntPathRequestMatcher("/"),
+                    new AntPathRequestMatcher("/home"),
+                    new AntPathRequestMatcher("/health"),
+                    new AntPathRequestMatcher("/status"),
                     new AntPathRequestMatcher("/index.jsp"),
                     new AntPathRequestMatcher("/login"),
                     new AntPathRequestMatcher("/register"),
+                    new AntPathRequestMatcher("/browse"),
                     new AntPathRequestMatcher("/api/auth/**"),
                     new AntPathRequestMatcher("/api/courses"),
-                    new AntPathRequestMatcher("/api/courses/*"),
+                    new AntPathRequestMatcher("/api/courses/**"),
+                    new AntPathRequestMatcher("/api/lectures/**"),
                     new AntPathRequestMatcher("/api/courses/search"),
                     new AntPathRequestMatcher("/api/courses/category/**"),
                     new AntPathRequestMatcher("/api/courses/categories"),
@@ -50,12 +55,15 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/css/**"),
                     new AntPathRequestMatcher("/js/**"),
                     new AntPathRequestMatcher("/image/**"),
+                    new AntPathRequestMatcher("/images/**"),
                     new AntPathRequestMatcher("/static/**"),
+                    new AntPathRequestMatcher("/WEB-INF/**"),
                     new AntPathRequestMatcher("/h2-console/**"),
                     new AntPathRequestMatcher("/actuator/**"),
                     new AntPathRequestMatcher("/actuator/health"),
                     new AntPathRequestMatcher("/error"),
-                    new AntPathRequestMatcher("/favicon.ico")
+                    new AntPathRequestMatcher("/favicon.ico"),
+                    new AntPathRequestMatcher("/password-reset.html")
                 ).permitAll()
                 .anyRequest().authenticated()
             );
