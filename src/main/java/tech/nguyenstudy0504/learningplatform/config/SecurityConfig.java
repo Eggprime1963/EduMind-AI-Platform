@@ -32,6 +32,10 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers(
+                    new AntPathRequestMatcher("/"),
+                    new AntPathRequestMatcher("/index.jsp"),
+                    new AntPathRequestMatcher("/login"),
+                    new AntPathRequestMatcher("/register"),
                     new AntPathRequestMatcher("/api/auth/**"),
                     new AntPathRequestMatcher("/api/courses"),
                     new AntPathRequestMatcher("/api/courses/*"),
@@ -44,9 +48,12 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/css/**"),
                     new AntPathRequestMatcher("/js/**"),
                     new AntPathRequestMatcher("/image/**"),
+                    new AntPathRequestMatcher("/static/**"),
                     new AntPathRequestMatcher("/h2-console/**"),
                     new AntPathRequestMatcher("/actuator/**"),
-                    new AntPathRequestMatcher("/actuator/health")
+                    new AntPathRequestMatcher("/actuator/health"),
+                    new AntPathRequestMatcher("/error"),
+                    new AntPathRequestMatcher("/favicon.ico")
                 ).permitAll()
                 .anyRequest().authenticated()
             );

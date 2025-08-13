@@ -12,6 +12,7 @@ tech\nguyenstudy0504\learningplatform\controller\AuthController.class
 tech\nguyenstudy0504\learningplatform\model\Enrollment.class
 tech\nguyenstudy0504\learningplatform\service\AIService.class
 tech\nguyenstudy0504\learningplatform\service\CourseService.class
+tech\nguyenstudy0504\learningplatform\controller\HomeController.class
 tech\nguyenstudy0504\learningplatform\dto\LoginRequest.class
 tech\nguyenstudy0504\learningplatform\config\AIConfig.class
 tech\nguyenstudy0504\learningplatform\model\UserActivity.class
