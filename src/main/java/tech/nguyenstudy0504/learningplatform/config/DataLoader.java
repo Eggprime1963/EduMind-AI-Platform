@@ -25,18 +25,25 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("DataLoader: Starting application data initialization...");
         try {
+            // Test basic database connectivity first
+            long userCount = userRepository.count();
+            System.out.println("DataLoader: Database connected successfully. Current user count: " + userCount);
+            
             // Check if data already exists
-            if (userRepository.count() == 0) {
+            if (userCount == 0) {
+                System.out.println("DataLoader: No users found, loading initial data...");
                 loadInitialData();
-                System.out.println("Initial data loaded successfully");
+                System.out.println("DataLoader: Initial data loaded successfully");
             } else {
-                System.out.println("Database already contains data, skipping initialization");
+                System.out.println("DataLoader: Database already contains " + userCount + " users, skipping initialization");
             }
         } catch (Exception e) {
-            System.err.println("Error loading initial data: " + e.getMessage());
+            System.err.println("DataLoader: Error during data initialization: " + e.getMessage());
+            System.err.println("DataLoader: Application will continue without initial data");
             e.printStackTrace();
-            // Continue without failing the application
+            // Continue without failing the application - this is important for Railway deployment
         }
     }
 
