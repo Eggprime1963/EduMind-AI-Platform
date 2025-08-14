@@ -1,7 +1,6 @@
 package tech.nguyenstudy0504.learningplatform.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -12,57 +11,71 @@ import javax.sql.DataSource;
 @Configuration
 public class DatabaseConfig {
 
-    @Value("${DATABASE_URL:}")
-    private String databaseUrl;
+    @Value("${MYSQL_URL:}")
+    private String mysqlUrl;
     
-    @Value("${MYSQLUSER:}")
+    @Value("${MYSQL_PUBLIC_URL:}")
+    private String mysqlPublicUrl;
+    
+    @Value("${MYSQLUSER:root}")
     private String mysqlUser;
     
-    @Value("${MYSQLPASSWORD:}")
+    @Value("${MYSQL_ROOT_PASSWORD:}")
     private String mysqlPassword;
     
     @Value("${MYSQLHOST:}")
     private String mysqlHost;
     
-    @Value("${MYSQLPORT:}")
+    @Value("${MYSQLPORT:3306}")
     private String mysqlPort;
     
-    @Value("${MYSQLDATABASE:}")
+    @Value("${MYSQL_DATABASE:railway}")
     private String mysqlDatabase;
+    
+    @Value("${RAILWAY_PRIVATE_DOMAIN:}")
+    private String railwayPrivateDomain;
 
     @Bean
     @Primary
-    @ConditionalOnProperty(name = "spring.datasource.url", matchIfMissing = false)
     public DataSource railwayDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         
-        // Try to construct URL from Railway environment variables if DATABASE_URL is not available
-        if (databaseUrl != null && !databaseUrl.isEmpty()) {
-            dataSource.setUrl(databaseUrl);
-        } else if (mysqlHost != null && !mysqlHost.isEmpty()) {
-            String constructedUrl = String.format(
+        String finalUrl = null;
+        
+        // Try MYSQL_URL first (format: mysql://user:pass@host:port/db)
+        if (mysqlUrl != null && !mysqlUrl.isEmpty() && !mysqlUrl.contains("${{")) {
+            // Convert MySQL URL to JDBC URL
+            finalUrl = mysqlUrl.replace("mysql://", "jdbc:mysql://") + 
+                      "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&autoReconnect=true";
+            System.out.println("Using MYSQL_URL: " + finalUrl);
+        } 
+        // Fallback: construct from individual components
+        else if (railwayPrivateDomain != null && !railwayPrivateDomain.isEmpty()) {
+            finalUrl = String.format(
                 "jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&autoReconnect=true",
-                mysqlHost, mysqlPort != null && !mysqlPort.isEmpty() ? mysqlPort : "3306",
-                mysqlDatabase != null && !mysqlDatabase.isEmpty() ? mysqlDatabase : "railway"
+                railwayPrivateDomain, mysqlPort, mysqlDatabase
             );
-            dataSource.setUrl(constructedUrl);
-            System.out.println("Constructed Database URL: " + constructedUrl);
+            System.out.println("Constructed URL from RAILWAY_PRIVATE_DOMAIN: " + finalUrl);
+        }
+        // Last fallback: use hardcoded values for Railway
+        else {
+            finalUrl = String.format(
+                "jdbc:mysql://%s:%s/%s?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&autoReconnect=true",
+                mysqlHost != null && !mysqlHost.isEmpty() ? mysqlHost : "mysql.railway.internal",
+                mysqlPort, mysqlDatabase
+            );
+            System.out.println("Using fallback URL: " + finalUrl);
         }
         
-        if (mysqlUser != null && !mysqlUser.isEmpty()) {
-            dataSource.setUsername(mysqlUser);
-        }
+        dataSource.setUrl(finalUrl);
+        dataSource.setUsername(mysqlUser);
+        dataSource.setPassword(mysqlPassword);
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         
-        if (mysqlPassword != null && !mysqlPassword.isEmpty()) {
-            dataSource.setPassword(mysqlPassword);
-        }
-        
-        // Auto-detect driver based on URL
-        if (databaseUrl != null && databaseUrl.contains("postgresql")) {
-            dataSource.setDriverClassName("org.postgresql.Driver");
-        } else {
-            dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        }
+        System.out.println("Database Configuration:");
+        System.out.println("  URL: " + finalUrl);
+        System.out.println("  Username: " + mysqlUser);
+        System.out.println("  Password: " + (mysqlPassword != null && !mysqlPassword.isEmpty() ? "***SET***" : "NOT SET"));
         
         return dataSource;
     }

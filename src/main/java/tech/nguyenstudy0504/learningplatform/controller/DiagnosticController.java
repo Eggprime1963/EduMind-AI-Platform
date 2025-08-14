@@ -29,17 +29,23 @@ public class DiagnosticController {
     public ResponseEntity<Map<String, Object>> diagnostic() {
         Map<String, Object> info = new HashMap<>();
         
-        // Environment variables
+        // Railway-specific environment variables
         Map<String, String> envVars = new HashMap<>();
-        envVars.put("DATABASE_URL", env.getProperty("DATABASE_URL", "not-set"));
-        envVars.put("MYSQLUSER", env.getProperty("MYSQLUSER", "not-set"));
-        envVars.put("MYSQLPASSWORD", env.getProperty("MYSQLPASSWORD", "not-set") != null ? "***SET***" : "not-set");
-        envVars.put("MYSQLHOST", env.getProperty("MYSQLHOST", "not-set"));
-        envVars.put("MYSQLPORT", env.getProperty("MYSQLPORT", "not-set"));
+        envVars.put("MYSQL_DATABASE", env.getProperty("MYSQL_DATABASE", "not-set"));
+        envVars.put("MYSQL_PUBLIC_URL", env.getProperty("MYSQL_PUBLIC_URL", "not-set"));
+        envVars.put("MYSQL_ROOT_PASSWORD", env.getProperty("MYSQL_ROOT_PASSWORD", "not-set") != null ? "***SET***" : "not-set");
+        envVars.put("MYSQL_URL", env.getProperty("MYSQL_URL", "not-set"));
         envVars.put("MYSQLDATABASE", env.getProperty("MYSQLDATABASE", "not-set"));
+        envVars.put("MYSQLHOST", env.getProperty("MYSQLHOST", "not-set"));
+        envVars.put("MYSQLPASSWORD", env.getProperty("MYSQLPASSWORD", "not-set") != null ? "***SET***" : "not-set");
+        envVars.put("MYSQLPORT", env.getProperty("MYSQLPORT", "not-set"));
+        envVars.put("MYSQLUSER", env.getProperty("MYSQLUSER", "not-set"));
+        envVars.put("RAILWAY_PRIVATE_DOMAIN", env.getProperty("RAILWAY_PRIVATE_DOMAIN", "not-set"));
+        envVars.put("RAILWAY_TCP_PROXY_DOMAIN", env.getProperty("RAILWAY_TCP_PROXY_DOMAIN", "not-set"));
+        envVars.put("RAILWAY_TCP_PROXY_PORT", env.getProperty("RAILWAY_TCP_PROXY_PORT", "not-set"));
         envVars.put("PORT", env.getProperty("PORT", "not-set"));
         
-        info.put("environment_variables", envVars);
+        info.put("railway_environment_variables", envVars);
         info.put("active_profiles", env.getActiveProfiles());
         info.put("database_url_from_value", databaseUrl);
         
@@ -61,6 +67,7 @@ public class DiagnosticController {
             info.put("connection_status", "FAILED");
             info.put("connection_error", e.getMessage());
             info.put("error_class", e.getClass().getSimpleName());
+            e.printStackTrace(); // Log full stack trace for debugging
         }
         
         return ResponseEntity.ok(info);
