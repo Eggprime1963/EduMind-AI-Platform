@@ -25,8 +25,11 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("DataLoader: Starting application data initialization...");
+        System.out.println("=== DataLoader: Starting application data initialization ===");
         try {
+            // Add a small delay to let the application fully start
+            Thread.sleep(2000);
+            
             // Test basic database connectivity first
             long userCount = userRepository.count();
             System.out.println("DataLoader: Database connected successfully. Current user count: " + userCount);
@@ -40,11 +43,12 @@ public class DataLoader implements CommandLineRunner {
                 System.out.println("DataLoader: Database already contains " + userCount + " users, skipping initialization");
             }
         } catch (Exception e) {
-            System.err.println("DataLoader: Error during data initialization: " + e.getMessage());
+            System.err.println("DataLoader: Error during data initialization: " + e.getClass().getSimpleName() + " - " + e.getMessage());
             System.err.println("DataLoader: Application will continue without initial data");
-            e.printStackTrace();
-            // Continue without failing the application - this is important for Railway deployment
+            // Don't print full stack trace in production to avoid log spam
+            // e.printStackTrace();
         }
+        System.out.println("=== DataLoader: Initialization complete ===");
     }
 
     private void loadInitialData() {

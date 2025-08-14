@@ -38,6 +38,8 @@ public class SecurityConfig {
                     new AntPathRequestMatcher("/home"),
                     new AntPathRequestMatcher("/health"),
                     new AntPathRequestMatcher("/status"),
+                    new AntPathRequestMatcher("/ping"),
+                    new AntPathRequestMatcher("/ready"),
                     new AntPathRequestMatcher("/diagnostic"),
                     new AntPathRequestMatcher("/index.jsp"),
                     new AntPathRequestMatcher("/login"),

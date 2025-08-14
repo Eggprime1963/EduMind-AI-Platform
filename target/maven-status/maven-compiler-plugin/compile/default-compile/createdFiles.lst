@@ -34,6 +34,7 @@ tech\nguyenstudy0504\learningplatform\service\EnrollmentService.class
 tech\nguyenstudy0504\learningplatform\model\Lecture$Status.class
 tech\nguyenstudy0504\learningplatform\dto\LoginResponse.class
 tech\nguyenstudy0504\learningplatform\repository\EnrollmentRepository.class
+tech\nguyenstudy0504\learningplatform\controller\SimpleHealthController.class
 tech\nguyenstudy0504\learningplatform\controller\HealthController.class
 tech\nguyenstudy0504\learningplatform\controller\DiagnosticController.class
 tech\nguyenstudy0504\learningplatform\repository\UserRepository.class
